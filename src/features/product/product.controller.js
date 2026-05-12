@@ -21,9 +21,15 @@ export default class ProductController{
 
     // };
 
-    // getOneProduct(req, res){
-
-    // };
+    getOneProduct(req, res){
+        const id = Number(req.params.id);
+        const product = ProductModel.get(id);
+        if(product){
+            res.status(200).send(product);
+        }else{
+            res.status(404).send("Product not found");
+        }
+    };
 
     // filterProduct(req, res){
 
