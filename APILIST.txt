@@ -1,0 +1,6 @@
+Products
+Get Products, 
+Add Products,
+Get one Product,
+Rate product,
+Filter Product
