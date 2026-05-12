@@ -25,6 +25,16 @@ export default class ProductModel{
         products.push(product);
         return products;
     }
+
+    static filter(minPrice, maxPrice, category) {
+    return products.filter((p) => {
+        return (
+            (!minPrice || p.price >= Number(minPrice)) &&
+            (!maxPrice || p.price <= Number(maxPrice)) &&
+            (!category || p.category === category)
+        );
+    });
+    }
 }
 
 const products = [
@@ -32,7 +42,7 @@ const products = [
         1,
         "iPhone 15",
         "Latest Apple smartphone with A16 chip",
-        79999,
+        49999,
         "https://www.google.com/imgres?q=iphone%2015&imgurl=https%3A%2F%2Fwww.imagineonline.store%2Fcdn%2Fshop%2Ffiles%2FiPhone_15_Blue_PDP_Image_Position-1_alt__en-IN_d242440d-a718-4536-a369-b6dccf9b636e.jpg%3Fv%3D1759733978%26width%3D1445&imgrefurl=https%3A%2F%2Fwww.imagineonline.store%2Fproducts%2Fiphone-15-mtp93hn-a%3Fsrsltid%3DAfmBOor2gN-sMb4q16okqOSLn8dpFyLgfkosMrvLFWzlZC6bjhOU6KNZ&docid=DcphcN264atRqM&tbnid=Rb5-IR38_nbZFM&vet=12ahUKEwjojKjpzrOUAxWdbmwGHRydAssQnPAOegQIUBAB..i&w=1445&h=1445&hcb=2&ved=2ahUKEwjojKjpzrOUAxWdbmwGHRydAssQnPAOegQIUBAB",
         "Mobile",
         "128GB"

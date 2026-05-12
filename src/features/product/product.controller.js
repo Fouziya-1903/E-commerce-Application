@@ -31,7 +31,13 @@ export default class ProductController{
         }
     };
 
-    // filterProduct(req, res){
+    filterProduct(req, res){
+        const minPrice = req.query.minPrice;
+        const maxPrice = req.query.maxPrice;
+        const category = req.query.category;
 
-    // };
+        const result = ProductModel.filter(minPrice,maxPrice,category);
+
+        return res.status(200).send(result);
+    };
 }
