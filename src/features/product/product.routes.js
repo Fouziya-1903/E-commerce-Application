@@ -1,9 +1,8 @@
 import express from 'express';
 import ProductController from './product.controller.js';
-import ProductController from './product.controller.js';
-
-export const router = express.router();
-
+import { upload } from '../../middlewares/fileUpload.middleware.js';
+export const productRouter = express.Router();
 const productController = new ProductController(); 
-router.get("/", productController.getAllProducts);
-router.post("/", productController.addProduct);
+
+productRouter.get("/", productController.getAllProducts);
+productRouter.post("/",upload.single('imageUrl'), productController.addProduct);
