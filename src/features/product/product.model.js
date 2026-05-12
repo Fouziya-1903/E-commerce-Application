@@ -27,21 +27,13 @@ export default class ProductModel{
     }
 
     static filter(minPrice, maxPrice, category) {
-    // Force conversion and log the numbers inside the loop
     const minNum = minPrice ? Number(minPrice) : 0;
     const maxNum = maxPrice ? Number(maxPrice) : Number.MAX_VALUE;
 
     return products.filter((p) => {
-        // Logging is the only way to catch the 'invisible' bug
         const price = Number(p.price);
-        
         const isPriceMatch = price >= minNum && price <= maxNum;
-        const isCategoryMatch = !category || p.category.trim() === category.trim();
-
-        // If you see the Samsung, this log will tell you exactly why it stayed
-        if (p.id === 2) {
-            console.log(`Samsung Check: ${price} <= ${maxNum} is ${price <= maxNum}`);
-        }
+        const isCategoryMatch = !category || p.category === category;
 
         return isPriceMatch && isCategoryMatch;
     });
