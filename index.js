@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import swagger from 'swagger-ui-express';
 import apiDocs from './swagger.json' with { type: 'json' };
+import cors from "cors";
 
 import express from "express";
 import {productRouter} from "./src/features/product/product.routes.js"
@@ -16,6 +17,25 @@ dotenv.config();
 
 const server = express();
 
+let corsOptions = {
+    origin:'http://localhost:5500',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true
+}
+
+server.use(cors(corsOptions));
+
+// server.use((req, res, next)=>{
+//     res.header("Access-Control-Allow,Origin", "http://127.0.0.1:5500/index.html")
+//     res.header("Access-Control-Allow-Headers", '*');
+//     res.header("Access-Control-Allow-Methods", '*');
+//     if(req.method == "OPTIONS"){
+//         return res.sendStatus(200);
+//     }
+//     next();
+// });
+
 server.use(express.json());
 server.use("/api-docs",swagger.serve, swagger.setup(apiDocs));
 // server.use("/api/products", basicAuthorizer, productRouter);
@@ -29,7 +49,7 @@ server.get("/", (req,res)=>{
 })
 
 //Configure middleware to handle 404 request
-server.use((req, res)=>{
+server.use((req, res, next)=>{
     res.status(404).send("API is not found");
 })
 
