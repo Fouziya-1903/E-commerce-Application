@@ -25,6 +25,8 @@ export default class UserModel{
     static getAll(){
         return users;
     }
+
+    
 }
 
 const users = [
@@ -35,4 +37,10 @@ const users = [
         type: 'seller'
     },
 
+    {
+        name: 'Customer User',
+        email: 'customer@abcd.com',
+        password: 'password2',
+        type: 'customer'
+    },
 ];

@@ -1,3 +1,4 @@
+import UserModel from "../user/user.model.js";
 export default class ProductModel{
     constructor(id, name, desc, price, imageUrl, category, size){
         this.id = id;
@@ -37,6 +38,46 @@ export default class ProductModel{
 
         return isPriceMatch && isCategoryMatch;
     });
+    }
+
+    static rateProduct(userId, productId, rating){
+        
+        //Validate user
+        const user = UserModel.getAll().find((u)=> u.id == userId);
+        if(!user){
+            return "User not found";
+        }
+
+        //Validate Product
+        const product = products.find((p)=>p.id == productId);
+        if(!product){
+            return "Product not found";
+        }
+
+        //Check if there are any ratings and if not, add the ratings array to the product obj
+        if(!product.ratings){
+            product.ratings = [];
+            product.ratings.push({
+                userId: userId,
+                rating: rating
+            })
+        }else{
+            //If there exists ratings update the ratings
+            const existingRatingIndex = product.ratings.findIndex((r)=> r.userId == userId);
+
+            if(existingRatingIndex >= 0){
+                product.ratings[existingRatingIndex] = {
+                    userId: userId,
+                    rating: rating
+                };
+            }else{
+                //if no existing ratings, we add new rating
+                product.ratings.push({
+                    userId: userId,
+                    rating: rating
+                });
+            }
+        }
     }
 }
 
