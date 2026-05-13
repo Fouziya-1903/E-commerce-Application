@@ -13,6 +13,7 @@ import { userRouter } from "./src/features/user/user.routes.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import { cartRouter } from "./src/features/cart/cart.routes.js";
 import loggerMiddleware, { logger } from "./src/middlewares/logger.middleware.js";
+import { ApplicationError } from "./src/error-handler/applicationError.js";
 //Load the variables into process.env
 dotenv.config();
 
@@ -59,8 +60,12 @@ server.use((err, req,res,next)=>{
         url: req.url,
         method: req.method
     });
+
+    if(err instanceof ApplicationError){
+        return res.status(err.code).send(err.message);
+    }
     console.log("Application Error:", err);
-    res.status(503).send("Something went wrong, please try again later");
+    res.status(500).send("Something went wrong, please try again later");
 })
 
 //Configure middleware to handle 404 request

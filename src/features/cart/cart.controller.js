@@ -17,12 +17,9 @@ export default class CartController{
         const userId = req.userId;
         const cartItemId = req.query.cartItemId;
 
-        const error = CartModel.deleteCartItem(cartItemId, userId);
+        CartModel.deleteCartItem(cartItemId, userId);
+        
+       res.status(200).send("The cart item is deleted successfully"); 
 
-        if(error){
-            res.status(404).send(error);
-        }else{
-           res.status(200).send("The cart item is deleted successfully"); 
-        }
     }
 }

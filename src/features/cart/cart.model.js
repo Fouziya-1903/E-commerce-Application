@@ -1,3 +1,5 @@
+import { ApplicationError } from "../../error-handler/applicationError.js";
+
 export default class CartModel{
     constructor(productId, userId, quantity, id){
         this.productId = productId,
@@ -28,14 +30,20 @@ export default class CartModel{
         
     }
 
-    static deleteCartItem(cartItemId, userId){
-        const cartItemIndex = cart.findIndex((i)=> i.id == cartItemId && i.userId == userId);
-        if(cartItemIndex == -1){
-            throw new Error("Item not found");
-        }else{
-            cart.splice(cartItemIndex,1);
+    static deleteCartItem(cartItemId, userId) {
+        // Debugging: Check the values being compared
+        
+        const cartItemIndex = cart.findIndex((i) => {
+            return i.cartItemId == cartItemId && i.userId == userId;
+        });
+
+        if (cartItemIndex == -1) {
+            throw new ApplicationError("Item not found", 404);
+        } else {
+            cart.splice(cartItemIndex, 1);
         }
     }
+
 }
 
 const cart = [
