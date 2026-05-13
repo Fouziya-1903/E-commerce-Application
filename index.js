@@ -16,8 +16,8 @@ dotenv.config();
 
 const server = express();
 
-server.use("/api-docs",swagger.serve, swagger.setup(apiDocs));
 server.use(express.json());
+server.use("/api-docs",swagger.serve, swagger.setup(apiDocs));
 // server.use("/api/products", basicAuthorizer, productRouter);
 server.use("/api/products", jwtAuth, productRouter);   
 server.use("/api/users", userRouter);
