@@ -8,7 +8,7 @@ const jwtAuth = (req, res, next)=>{
     }
     //check if token is valid or expired
     try{
-        const payload = jwt.verify(token, "mq6FHCEFFN7RD8KW90ZtQyrb");
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
         //we store it to use the user id in the cart controller to add the cart item
         req.userId = payload.userId;
         console.log(payload);
