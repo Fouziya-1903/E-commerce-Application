@@ -12,8 +12,7 @@ import { userRouter } from "./src/features/user/user.routes.js";
 // import { basicAuthorizer } from "./src/middlewares/basicAuth.middleware.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import { cartRouter } from "./src/features/cart/cart.routes.js";
-import loggerMiddleware from "./src/middlewares/logger.middleware.js";
-
+import loggerMiddleware, { logger } from "./src/middlewares/logger.middleware.js";
 //Load the variables into process.env
 dotenv.config();
 
@@ -51,6 +50,17 @@ server.use(express.static('uploads'));
 
 server.get("/", (req,res)=>{
     res.send("Welcome to e commerce application");
+})
+
+server.use((err, req,res,next)=>{
+    logger.error({
+        message: err.message,
+        stack: err.stack,
+        url: req.url,
+        method: req.method
+    });
+    console.log("Application Error:", err);
+    res.status(503).send("Something went wrong, please try again later");
 })
 
 //Configure middleware to handle 404 request

@@ -1,6 +1,6 @@
 // import fs from 'fs';
 import winston from "winston";
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
     level:'info',
     format: winston.format.json(),
     defaultMeta: {service: 'request-logging'},
