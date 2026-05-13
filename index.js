@@ -11,6 +11,7 @@ import { userRouter } from "./src/features/user/user.routes.js";
 // import { basicAuthorizer } from "./src/middlewares/basicAuth.middleware.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import { cartRouter } from "./src/features/cart/cart.routes.js";
+import loggerMiddleware from "./src/middlewares/logger.middleware.js";
 
 //Load the variables into process.env
 dotenv.config();
@@ -38,6 +39,9 @@ server.use(cors(corsOptions));
 
 server.use(express.json());
 server.use("/api-docs",swagger.serve, swagger.setup(apiDocs));
+
+server.use(loggerMiddleware);
+
 // server.use("/api/products", basicAuthorizer, productRouter);
 server.use("/api/products", jwtAuth, productRouter);   
 server.use("/api/users", userRouter);
