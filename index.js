@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import swagger from 'swagger-ui-express';
 import apiDocs from './swagger.json' with { type: 'json' };
 import cors from "cors";
+import winston from "winston";
 
 import express from "express";
 import {productRouter} from "./src/features/product/product.routes.js"
