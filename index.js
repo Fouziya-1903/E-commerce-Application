@@ -28,6 +28,11 @@ server.get("/", (req,res)=>{
     res.send("Welcome to e commerce application");
 })
 
+//Configure middleware to handle 404 request
+server.use((req, res)=>{
+    res.status(404).send("API is not found");
+})
+
 server.listen(3000,()=>{    
     console.log("Server is running on port 3000");  
 });
