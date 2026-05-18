@@ -31,6 +31,19 @@ export default class UserRepository {
         }
     }
 
+    async findByMail(email) {
+        try {
+            const db = getDB();
+            const collection = db.collection('users');
+
+            const user = await collection.findOne({ email });
+            return user;         
+        } catch (err) {
+            console.error(err);
+            throw new ApplicationError("Database issue during sign in");
+        }
+    }
+
     // 3. Upgraded Get All Logic (Fetches dynamically from your database!)
     async getAll() {
         try {
