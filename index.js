@@ -4,6 +4,8 @@ import apiDocs from './swagger.json' with { type: 'json' };
 import cors from "cors";
 import winston from "winston";
 
+import {connectToMongoDB} from "./src/config/mongodb.js";
+
 import express from "express";
 import {productRouter} from "./src/features/product/product.routes.js"
 import { userRouter } from "./src/features/user/user.routes.js";
@@ -75,4 +77,5 @@ server.use((req, res, next)=>{
 
 server.listen(3000,()=>{    
     console.log("Server is running on port 3000");  
+    connectToMongoDB();
 });

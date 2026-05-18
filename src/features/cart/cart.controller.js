@@ -21,5 +21,5 @@ export default class CartController{
         
        res.status(200).send("The cart item is deleted successfully"); 
 
-    }
+    } 
 }
