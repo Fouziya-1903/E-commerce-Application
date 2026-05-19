@@ -177,3 +177,87 @@
 {"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
 {"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
 {"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products/15 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/15 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/15 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/15 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getAll products in database","method":"GET","service":"request-logging","stack":"Error: Something went wrong with getAll products in database\n    at ProductController.getAllProducts (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:16:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/6a0c4879efb1e31d8bb434ec - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/6a0c4879efb1e31d8bb434ec - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getOneproduct in controller","method":"GET","service":"request-logging","stack":"Error: Something went wrong with getOneproduct in controller\n    at ProductController.getOneProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:54:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products/6a0c4879efb1e31d8bb434ec"}
+{"level":"info","message":"/api/products/6a0c4879efb1e31d8bb434ec - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getOneproduct in controller","method":"GET","service":"request-logging","stack":"Error: Something went wrong with getOneproduct in controller\n    at ProductController.getOneProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:54:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products/6a0c4879efb1e31d8bb434ec"}
+{"level":"info","message":"/api/products/6a0c4879efb1e31d8bb434ec - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getOneproduct in controller","method":"GET","service":"request-logging","stack":"Error: Something went wrong with getOneproduct in controller\n    at ProductController.getOneProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:54:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products/6a0c4879efb1e31d8bb434ec"}
+{"level":"info","message":"/api/products/6a0c4879efb1e31d8bb434ec - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getOneproduct in controller","method":"GET","service":"request-logging","stack":"Error: Something went wrong with getOneproduct in controller\n    at ProductController.getOneProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:55:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products/6a0c4879efb1e31d8bb434ec"}
+{"level":"info","message":"/api/products/6a0c4879efb1e31d8bb434ec - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/6a0c4879efb1e31d8bb434ec - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?_id=6a0c65afaca35375f102b4f6 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?_id=6a0c65afaca35375f102b4f6 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?_id=6a0c65afaca35375f102b4f6 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?id=6a0c65afaca35375f102b4f6 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=8000000&maxPrice=800000000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=800000&maxPrice=8000000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=800000&maxPrice=8000000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=50000&maxPrice=8000000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=50000&maxPrice=8000000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=50000&maxPrice=8000000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=50000&maxPrice=8000000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=50000&maxPrice=80000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?minPrice=50000&maxPrice=800000 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5 - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getOne Product in database","method":"POST","service":"request-logging","stack":"Error: Something went wrong with getOne Product in database\n    at ProductRepository.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.repository.js:96:19)\n    at ProductController.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:79:42)\n    at file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.routes.js:20:23\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:295:15\n    at processParams (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:582:12)","url":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5"}
+{"level":"info","message":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5 - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getOne Product in database","method":"POST","service":"request-logging","stack":"Error: Something went wrong with getOne Product in database\n    at ProductRepository.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.repository.js:96:19)\n    at ProductController.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:79:42)\n    at file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.routes.js:20:23\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:295:15\n    at processParams (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:582:12)","url":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5"}
+{"level":"info","message":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5 - undefined","service":"request-logging"}
+{"level":"error","message":"Invalid format for User ID or Product ID supplied.","method":"POST","service":"request-logging","stack":"Error: Invalid format for User ID or Product ID supplied.\n    at ProductRepository.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.repository.js:90:23)\n    at ProductController.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:79:42)\n    at file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.routes.js:20:23\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:295:15\n    at processParams (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:582:12)","url":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5"}
+{"level":"info","message":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5 - undefined","service":"request-logging"}
+{"level":"error","message":"Invalid format for User ID or Product ID supplied.","method":"POST","service":"request-logging","stack":"Error: Invalid format for User ID or Product ID supplied.\n    at ProductRepository.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.repository.js:90:23)\n    at ProductController.rateProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:79:42)\n    at file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.routes.js:20:23\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\lib\\layer.js:152:17)\n    at C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:295:15\n    at processParams (C:\\Users\\Asus\\Desktop\\E-commerce-Application\\node_modules\\router\\index.js:582:12)","url":"/api/products/rate?userId=6a0c6577aca35375f102b4f5&productId=1000&ratings=4.5"}

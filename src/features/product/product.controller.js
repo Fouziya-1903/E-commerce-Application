@@ -1,54 +1,90 @@
 import ProductModel from "./product.model.js";
+import ProductRepository from "./product.repository.js";
+import { ApplicationError } from "../../error-handler/applicationError.js";
 export default class ProductController{
-    getAllProducts(req, res){
-        const products = ProductModel.getAll();
-        res.status(200).send(products);
+
+    constructor(){
+        this.productRepository = new ProductRepository();
+    }
+
+    getAllProducts = async (req, res, next)=> {
+        try{
+            const products = await this.productRepository.getAllProducts();
+            res.status(200).send(products);
+        }catch(err){
+            console.log(err);
+            next(new ApplicationError("Something went wrong with getAll products in database", 400));
+        }
+        
     };
 
-    addProduct(req, res){
-        const {name, price, size} = req.body;
-        const newProduct = {
-            name,
-            price: parseFloat(price),
-            size: size.split(','),
-            imageUrl : req.file.filename,
+    addProduct = async (req, res, next)=> {
+        try{
+            const { name, desc, price, category, size } = req.body;
+
+            const safeDesc = desc ? desc : ""; 
+            const safeSize = size ? size.split(',') : [];
+            
+            const newProduct = new ProductModel({
+                price: parseFloat(price),
+                name: name,
+                size: safeSize,
+                imageUrl: req.file ? req.file.filename : "",
+                category: category,
+                desc: safeDesc
+            });
+            const productAdded = await this.productRepository.add(newProduct);
+            res.status(201).send(productAdded);
+        }catch(err){
+            console.log(err);
+            next(new ApplicationError("Something went wrong with add product in product controller"));
         }
-        const productAdded = ProductModel.add(newProduct);
-        res.status(201).send(productAdded);
     };
 
     // rateProduct(req, res){
 
     // };
 
-    getOneProduct(req, res){
-        const id = Number(req.params.id);
-        const product = ProductModel.get(id);
-        if(product){
-            res.status(200).send(product);
-        }else{
-            res.status(404).send("Product not found");
+    getOneProduct = async (req, res, next)=> {
+        try{
+            const id = req.params.id;
+            const product = await this.productRepository.getOneProduct(id);
+            if(product){
+                res.status(200).send(product);
+            }else{
+                res.status(404).send("Product not found");
+            }
+        }catch(err){
+            console.log(err);
+            next(new ApplicationError("Something went wrong with getOneproduct in controller", 500));            
         }
     };
 
-    filterProduct(req, res){
-        const {minPrice, maxPrice, category} = req.query;
-        const result = ProductModel.filter(minPrice,maxPrice,category);
+    filterProduct =  async (req, res, next)=> {
 
-        return res.status(200).send(result);
+        try{    
+            const {minPrice, maxPrice, category} = req.query;
+            const result =await this.productRepository.filter(minPrice,maxPrice,category);
+            return res.status(200).send(result);
+        }catch(err){
+            console.log(err);
+            next(new ApplicationError("Something went wrong with filterProduct in controller", 500));    
+        }
+        
     };
 
-    rateProduct(req, res){
+    rateProduct = async (req, res, next)=> {
         const {userId, productId, ratings} = req.query;
         try{
-            ProductModel.rateProduct(
+            await this.productRepository.rateProduct(
             userId,
             productId,
             ratings
             );
+            return res.status(200).send("Successfully rated the product");
+
         }catch(err){
-            return res.status(401).send(err.message);
-        }
-        return res.status(200).send("Successfully rated the product");
+            console.log(err);
+            next(err);        }
     }
 }

@@ -2,12 +2,16 @@ import { getDB } from "../../config/mongodb.js";
 import { ApplicationError } from "../../error-handler/applicationError.js";
 
 export default class UserRepository {
+
+    constructor(){
+        this.collection = "users";
+    }
     
     // 1. Sign Up Logic
     async signUp(newUser) {
         try {
             const db = getDB();
-            const collection = db.collection('users');
+            const collection = db.collection(this.collection);
             
             await collection.insertOne(newUser);
             return newUser;
@@ -21,7 +25,7 @@ export default class UserRepository {
     async signIn(email, password) {
         try {
             const db = getDB();
-            const collection = db.collection('users');
+            const collection = db.collection(this.collection);
 
             const user = await collection.findOne({ email, password });
             return user;         
@@ -34,7 +38,7 @@ export default class UserRepository {
     async findByMail(email) {
         try {
             const db = getDB();
-            const collection = db.collection('users');
+            const collection = db.collection(this.collection);
 
             const user = await collection.findOne({ email });
             return user;         
@@ -48,7 +52,7 @@ export default class UserRepository {
     async getAll() {
         try {
             const db = getDB();
-            const collection = db.collection('users');
+            const collection = db.collection(this.collection);
             
             // .find() returns a cursor, .toArray() converts it into a clean list of objects
             const allUsers = await collection.find().toArray();

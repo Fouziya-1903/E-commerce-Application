@@ -1,8 +1,8 @@
 import { ApplicationError } from "../../error-handler/applicationError.js";
 import UserModel from "../user/user.model.js";
 export default class ProductModel{
-    constructor(id, name, desc, price, imageUrl, category, size){
-        this.id = id;
+    constructor({name, desc, price, imageUrl, category, size, id}){
+        this._id = id;
         this.name = name;
         this.desc = desc;
         this.price = price;
@@ -11,7 +11,7 @@ export default class ProductModel{
         this.size = size;
     }
 
-    static getAll(){
+    static getAllProducts(){
         return products;
     }
 
@@ -28,7 +28,7 @@ export default class ProductModel{
         return products;
     }
 
-    static filter(minPrice, maxPrice, category) {
+    static filterProduct(minPrice, maxPrice, category) {
     const minNum = minPrice ? Number(minPrice) : 0;
     const maxNum = maxPrice ? Number(maxPrice) : Number.MAX_VALUE;
 
