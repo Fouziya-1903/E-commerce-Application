@@ -40,7 +40,7 @@ export default class UserRepository {
             const db = getDB();
             const collection = db.collection(this.collection);
 
-            const user = await collection.findOne({ email });
+            const user = await collection.findOne({ email: email });
             return user;         
         } catch (err) {
             console.error(err);

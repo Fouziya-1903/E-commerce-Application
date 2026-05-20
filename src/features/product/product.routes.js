@@ -1,6 +1,7 @@
 import express from 'express';
 import ProductController from './product.controller.js';
 import { upload } from '../../middlewares/fileUpload.middleware.js';
+import jwtAuth from '../../middlewares/jwt.middleware.js';
 export const productRouter = express.Router();
 const productController = new ProductController(); 
 
@@ -13,9 +14,9 @@ productRouter.get("/filter", (req,res, next)=>{
 productRouter.get("/:id", (req,res, next)=>{
     productController.getOneProduct(req,res, next)
 });
-productRouter.post("/",upload.single('imageUrl'), (req,res, next)=>{
+productRouter.post("/",jwtAuth, upload.single('imageUrl'), (req,res, next)=>{
     productController.addProduct(req,res, next)
 });
-productRouter.post("/rate",(req,res, next)=>{
+productRouter.post("/rate", jwtAuth, (req,res, next)=>{
     productController.rateProduct(req,res, next)
 });

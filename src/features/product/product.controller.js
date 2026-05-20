@@ -74,9 +74,9 @@ export default class ProductController{
     };
 
     rateProduct = async (req, res, next)=> {
-        const {userId, productId, ratings} = req.query;
+        const {userId, productId, ratings} = req.body;
         try{
-            await this.productRepository.rateProduct(
+            await this.productRepository.rateProduct(   
             userId,
             productId,
             ratings
@@ -85,6 +85,7 @@ export default class ProductController{
 
         }catch(err){
             console.log(err);
-            next(err);        }
+            next(err);        
+        }
     }
 }

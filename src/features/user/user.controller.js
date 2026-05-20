@@ -10,7 +10,7 @@ export default class UserController {
     }
 
     // 1. Fixed the placement of async and wrapped the try-catch INSIDE the method
-    signUp = async (req, res)=>{
+    signUp = async (req, res, next)=>{
         try {   
             const { name, email, password, type } = req.body;
 
@@ -22,22 +22,23 @@ export default class UserController {
         } catch (err) {
             // It's better to log the actual error for debugging and send a response to the client
             console.error(err);
-            return res.status(500).send("Signup issue in the controller");
+            next(err);
         }
     }
 
     // 2. Made this method async as well, assuming your Model checks a live database
-    signIn = async (req, res)=>{
+    signIn = async (req, res, next)=>{
         try {            
             const user = await this.userRepository.findByMail(req.body.email);
 
             if(!user){
                 res.status(400).send("incorrect credentials");
             }else{
-                const result= bcrypt.compare(req.body.password, user.password);
+                const result= await bcrypt.compare(req.body.password, user.password);
                 if(result){
+                    console.log("LOGIN SUCCESS -> RAW USER OBJECT FROM DB IS:", user);
                     const token = jwt.sign(
-                    { userID: result.id, email: result.email }, 
+                    { userId: user._id, email: user.email }, 
                     process.env.JWT_SECRET, 
                     { expiresIn: '1h' }
                 );
@@ -48,7 +49,8 @@ export default class UserController {
             }
         } catch (err) {
             console.error(err);
-            return res.status(500).send("Signin issue in the controller");
+            next(err);
+            return res.status(500).send("Signin issue in the controller");        
         }
     }
 } 

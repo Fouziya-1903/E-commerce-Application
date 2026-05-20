@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { getDB } from "../../config/mongodb.js";
 import { ApplicationError } from "../../error-handler/applicationError.js";
+import e from "express";
 
 export default class ProductRepository{
 
@@ -26,7 +27,8 @@ export default class ProductRepository{
         try{
             const db = getDB();
             const collection = db.collection(this.collection);
-            return await collection.find().toArray();
+            const products = await collection.find({}).toArray();
+            return products;
         }catch(err){
             console.log(err);
             throw new ApplicationError("Something went wrong with getAll products in database");
@@ -80,25 +82,52 @@ export default class ProductRepository{
         }
     }
 
-    async rateProduct(userId, productId, ratings){
-        try{
+    async rateProduct(userId, productId, ratings) {
+        try {
             const db = getDB();
             const collection = db.collection(this.collection);
 
-            // 1. Guard Clause: Ensure both IDs are valid 24-character hex layouts before executing
+            // 1. Guard Clause: Ensure both IDs are valid 24-character hex layouts
             if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
                 throw new ApplicationError("Invalid format for User ID or Product ID supplied.", 400);
             }
 
-            await collection.updateOne({
-                _id: new ObjectId(productId)
-            }, {
-                $push: {ratings:{userId: new ObjectId(userId),ratings: Number(ratings)}}
-            });
-        }catch(err){
+            const pId = new ObjectId(productId);
+            const uId = new ObjectId(userId);
+            const numericRating = Number(ratings);
+
+            // 2. STEP 1: Try to update an existing score for this user
+            const updateResult = await collection.updateOne(
+                { 
+                    _id: pId, 
+                    "ratings.userId": uId 
+                },
+                { 
+                    // ✅ FIXED: Using the positional operator ($) to update the specific matched index
+                    $set: { "ratings.$.ratings": numericRating } 
+                }
+            );
+
+            // 3. STEP 2: If no existing rating matched this user, push a fresh one instead
+            // ✅ FIXED: Replaced 'if(numericRating)' with database match validation
+            if (updateResult.matchedCount === 0) {
+                await collection.updateOne(
+                    { _id: pId }, 
+                    {
+                        $push: { 
+                            ratings: { 
+                                userId: uId,         // ✅ Clean reused variable
+                                ratings: numericRating // ✅ Clean reused variable
+                            } 
+                        }
+                    }
+                );
+            }
+            
+        }catch(err) {
             console.log(err);
-            if (err instanceof ApplicationError) throw err
-            throw new ApplicationError("Something went wrong with getOne Product in database");
+            if (err instanceof ApplicationError) throw err;
+            throw new ApplicationError("Something went wrong with rateProduct in database", 500);
         }    
     }
 }
