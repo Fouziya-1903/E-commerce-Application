@@ -9,6 +9,7 @@ import {connectToMongoDB} from "./src/config/mongodb.js";
 import express from "express";
 import {productRouter} from "./src/features/product/product.routes.js"
 import { userRouter } from "./src/features/user/user.routes.js";
+import orderRouter from "./src/features/order/order.routes.js";
 // import bodyParser from "body-parser";
 // import multer from "multer";
 // import { basicAuthorizer } from "./src/middlewares/basicAuth.middleware.js";
@@ -49,6 +50,7 @@ server.use(loggerMiddleware);
 server.use("/api/products", jwtAuth, productRouter);   
 server.use("/api/users", userRouter);
 server.use("/api/cart", jwtAuth, cartRouter);
+server.use("/api/orders", jwtAuth, orderRouter);
 server.use(express.static('uploads'));
 
 server.get("/", (req,res)=>{

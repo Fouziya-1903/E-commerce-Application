@@ -11,9 +11,14 @@ productRouter.get("/", (req, res, next)=>{
 productRouter.get("/filter", (req,res, next)=>{
     productController.filterProduct(req,res, next)
 });
+productRouter.get("/averageProductPrice", (req, res, next)=>{
+    productController.avgProductPrice(req,res,next);
+})
 productRouter.get("/:id", (req,res, next)=>{
     productController.getOneProduct(req,res, next)
 });
+
+
 productRouter.post("/",jwtAuth, upload.single('imageUrl'), (req,res, next)=>{
     productController.addProduct(req,res, next)
 });
