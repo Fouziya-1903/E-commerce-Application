@@ -371,3 +371,13 @@
 {"level":"info","message":"/api/orders - undefined","service":"request-logging"}
 {"level":"info","message":"/api/orders - undefined","service":"request-logging"}
 {"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a12d813955249331445f3bf&quantity=1 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a12d813955249331445f3bf&quantity=1 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=2 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=20 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}

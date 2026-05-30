@@ -8,11 +8,10 @@ export default class OrderController{
     async placeOrder(req, res, next){
         try{
             const userId = req.userId;
-            this.orderRepository.placeOrder(userId);
-            res.status(201).send("Order is placed");
+            const newOrderPayload = await this.orderRepository.placeOrder(userId);
+            res.status(201).send(newOrderPayload);
         }catch(err){
-            console.log(err);
-            res.status(500).send("something went wrong in placeOrder controller");
+            console.log("Error trapped securely inside OrderController:", err.message);
             next(err);
         }
     }
