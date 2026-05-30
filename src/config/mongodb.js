@@ -23,6 +23,10 @@ export const getDB = ()=>{
     return client.db();
 }
 
+export const getClient = ()=>{
+    return client;
+}
+
 
 const createIndexes = async(db)=>{
     try{

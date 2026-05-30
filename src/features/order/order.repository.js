@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { getDB } from "../../config/mongodb.js";
 import { ApplicationError } from "../../error-handler/applicationError.js";
+import { getClient } from "../../config/mongodb.js";
 
 export default class OrderRepository {
     constructor() {
@@ -8,12 +9,17 @@ export default class OrderRepository {
     }
 
     async placeOrder(userId) {
+        const client = getClient();
+        let session;
         try {
+            session = client.startSession();
+            session.startTransaction();
+
             const db = getDB();
             const uId = new ObjectId(userId);
 
             // 1. Fetch all items currently inside the user's cart
-            const cartItems = await db.collection("cartItems").find({ userId: uId }).toArray();
+            const cartItems = await db.collection("cartItems").find({ userId: uId }, {session}).toArray();
 
             if (cartItems.length === 0) {
                 throw new ApplicationError("Cannot place an order with an empty cart", 400);
@@ -29,10 +35,11 @@ export default class OrderRepository {
                     },
                     {
                         $inc: { stock: -item.quantity } // Atomic calculation modification
-                    }
+                    },
+                    { session }
                 );
 
-                // If matchedCount is 0, it means the product doesn't exist OR stock < item.quantity
+                // If matchedCount(This is sent by the mongoDB. It is a recept object after the update iis performed, which specifies the number of the documents in the database that matched the filter, regardless of if they were actually modified) is 0, it means the product doesn't exist OR stock < item.quantity
                 if (stockUpdateResult.matchedCount === 0) {
                     throw new ApplicationError(
                         `Transaction Aborted: Insufficient stock for product id ${item.productId}`, 
@@ -42,7 +49,7 @@ export default class OrderRepository {
             }
 
             // 3. Call internal aggregation method to get the final bill amount
-            const totalAmount = await this.getTotalAmount(userId);
+            const totalAmount = await this.getTotalAmount(userId, session);
 
             // 4. Create final immutable historical order receipt document
             const newOrder = {
@@ -56,21 +63,29 @@ export default class OrderRepository {
             };
 
             // Write order document record to the database
-            await db.collection(this.collection).insertOne(newOrder);
+            await db.collection(this.collection).insertOne(newOrder, {session});
 
             // 5. Clear the shopping cart of the user after a successful purchase
-            await db.collection("cartItems").deleteMany({ userId: uId });
+            await db.collection("cartItems").deleteMany({ userId: uId }, {session});
 
+            await session.commitTransaction();
             return newOrder;
 
         } catch (err) {
-            console.log(err);
+            if (session) {
+                await session.abortTransaction();
+            }
+            console.log("Transaction successfully rolled back due to error:", err.message);
             if (err instanceof ApplicationError) throw err;
             throw new ApplicationError("Database transaction crash during order placement", 500);
+        } finally {
+            if (session) {
+                await session.endSession();
+            }
         }
     }
 
-    async getTotalAmount(userId) {
+    async getTotalAmount(userId, session) {
         try {
             const db = getDB();
             const uId = new ObjectId(userId);
@@ -108,7 +123,7 @@ export default class OrderRepository {
                         grandTotal: { $sum: "$itemTotal" }
                     }
                 }
-            ]).toArray();
+            ], { session }).toArray();
 
             return result.length > 0 ? result[0].grandTotal : 0;
         } catch (err) {

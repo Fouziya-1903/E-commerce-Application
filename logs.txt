@@ -381,3 +381,39 @@
 {"level":"info","message":"/api/orders - undefined","service":"request-logging"}
 {"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=20 - undefined","service":"request-logging"}
 {"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"error","message":"Transaction Aborted: Insufficient stock for product id 6a0c576646a5f771147990ff","method":"POST","service":"request-logging","stack":"Error: Transaction Aborted: Insufficient stock for product id 6a0c576646a5f771147990ff\n    at OrderRepository.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.repository.js:37:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async OrderController.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.controller.js:11:37)","url":"/api/orders"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=2 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=2 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=2 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"error","message":"session is not defined","method":"POST","service":"request-logging","stack":"ReferenceError: session is not defined\n    at OrderRepository.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.repository.js:82:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async OrderController.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.controller.js:11:37)","url":"/api/orders"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"passwordSeller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=2 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=2 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/averageProductPrice - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"error","message":"session is not defined","method":"POST","service":"request-logging","stack":"ReferenceError: session is not defined\n    at OrderRepository.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.repository.js:82:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async OrderController.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.controller.js:11:37)","url":"/api/orders"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'endSession')","method":"POST","service":"request-logging","stack":"TypeError: Cannot read properties of undefined (reading 'endSession')\n    at OrderRepository.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.repository.js:82:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async OrderController.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.controller.js:11:37)","url":"/api/orders"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a0c576646a5f771147990ff&quantity=2 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a12d839955249331445f3c0&quantity=5 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'endSession')","method":"POST","service":"request-logging","stack":"TypeError: Cannot read properties of undefined (reading 'endSession')\n    at OrderRepository.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.repository.js:82:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async OrderController.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.controller.js:11:37)","url":"/api/orders"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a12d839955249331445f3c0&quantity=5 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart?productId=6a12d813955249331445f3bf&quantity=1 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
+{"level":"info","message":"/api/orders - undefined","service":"request-logging"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'endSession')","method":"POST","service":"request-logging","stack":"TypeError: Cannot read properties of undefined (reading 'endSession')\n    at OrderRepository.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.repository.js:82:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async OrderController.placeOrder (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/order/order.controller.js:11:37)","url":"/api/orders"}
+{"level":"info","message":"/api/cart - undefined","service":"request-logging"}
