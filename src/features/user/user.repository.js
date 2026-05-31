@@ -1,65 +1,68 @@
-import { getDB } from "../../config/mongodb.js";
+import mongoose from "mongoose";
+import {userSchema} from "./user.schema.js"
 import { ApplicationError } from "../../error-handler/applicationError.js";
+//compile model based on schema
 
-export default class UserRepository {
+const userModel = mongoose.model('User', userSchema);
 
-    constructor(){
-        this.collection = "users";
-    }
-    
-    // 1. Sign Up Logic
-    async signUp(newUser) {
-        try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            
-            await collection.insertOne(newUser);
+export default class userRepository{
+    async signUp(userPayload){
+        try{
+            const newUser = new userModel(userPayload);
+            await newUser.save();
             return newUser;
-        } catch (err) {
-            console.error(err);
-            throw new ApplicationError("Database issue during user registration");
-        } 
-    }
-
-    // 2. Sign In Logic
-    async signIn(email, password) {
-        try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
-
-            const user = await collection.findOne({ email, password });
-            return user;         
-        } catch (err) {
-            console.error(err);
-            throw new ApplicationError("Database issue during sign in");
+        }catch(err){
+            console.log(err);
+            throw new ApplicationError("something went wrong in the mongoose user.newRepository.js", 500);
         }
     }
 
-    async findByMail(email) {
-        try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
+    async signIn(email, password){
+        try{
+            const user = await userModel.findOne({ email }).select("+password");
+            if(!user){
+                return null;
+            }
 
-            const user = await collection.findOne({ email: email });
-            return user;         
-        } catch (err) {
-            console.error(err);
-            throw new ApplicationError("Database issue during sign in");
+            console.log("------------------ AUTH DEBUG ------------------");
+            console.log("1. RAW PASSWORD FROM POSTMANPAYLOAD:", password);
+            console.log("2. PASSWORD ATTRIBUTE FROM DB OBJECT:", user.password);
+            console.log("------------------------------------------------");
+
+            // Execute the schema instance method we built to verify the bcrypt hash matrix safely
+            const isPasswordMatched = await user.comparePassword(password, user.password);
+            if (!isPasswordMatched) {
+                return null;
+            }
+            user.password = undefined;
+            return user;
+        }catch(err){
+            console.log(err);
+            throw new ApplicationError("something went wrong in the mongoose user.newRepository.js", 500);
         }
     }
 
-    // 3. Upgraded Get All Logic (Fetches dynamically from your database!)
-    async getAll() {
-        try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            
-            // .find() returns a cursor, .toArray() converts it into a clean list of objects
-            const allUsers = await collection.find().toArray();
-            return allUsers;
-        } catch (err) {
-            console.error(err);
-            throw new ApplicationError("Could not retrieve users from database");
+    async findByMail(email){
+        try{
+            return await userModel.findOne({email});
+        }catch(err){
+            console.log(err);
+            throw new ApplicationError("something went wrong in the mongoose user.newRepository.js", 500);
+        }
+    }
+
+    async resetPassword(userId, newPassword){
+        try{
+            let user = await userModel.findById(userId);
+            if(user){
+                user.password = newPassword; 
+                user.save();
+            }else{
+                throw new ApplicationError("User not found");
+            }
+        }catch(err){
+            console.log(err);
+            throw new ApplicationError("something went wrong in the mongoose user.newRepository.js", 500);    
         }
     }
 }
