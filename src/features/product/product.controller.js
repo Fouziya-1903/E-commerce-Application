@@ -25,25 +25,25 @@ export default class ProductController{
             const safeDesc = desc ? desc : ""; 
             const safeSize = size ? size.split(',') : [];
             
-            const newProduct = new ProductModel({
+            const productData = {
                 price: parseFloat(price),
                 name: name,
                 size: safeSize,
                 imageUrl: req.file ? req.file.filename : "",
                 category: category,
                 desc: safeDesc
+            };
+            const productAdded = await this.productRepository.add(productData);
+            res.status(201).json({
+                success: true,
+                message: "Product added and categories updated successfully",
+                data: productAdded
             });
-            const productAdded = await this.productRepository.add(newProduct);
-            res.status(201).send(productAdded);
         }catch(err){
             console.log(err);
-            next(new ApplicationError("Something went wrong with add product in product controller"));
+            next(new ApplicationError("Something went wrong with add product in product controller",400));
         }
     };
-
-    // rateProduct(req, res){
-
-    // };
 
     getOneProduct = async (req, res, next)=> {
         try{
@@ -59,6 +59,20 @@ export default class ProductController{
             next(new ApplicationError("Something went wrong with getOneproduct in controller", 500));            
         }
     };
+
+    addCateory = async (req, res, next)=>{
+        try{
+            const savedCategory = await this.productRepository.addCategory(req.body);
+            return res.status(201).json({
+                success: true,
+                message: "Category registered successfully",
+                data: savedCategory
+            })
+        }catch(err){
+            console.log(err);
+            next(err);
+        }
+    }
 
     filterProduct =  async (req, res, next)=> {
 

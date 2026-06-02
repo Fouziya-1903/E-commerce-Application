@@ -22,6 +22,9 @@ productRouter.get("/:id", (req,res, next)=>{
 productRouter.post("/",jwtAuth, upload.single('imageUrl'), (req,res, next)=>{
     productController.addProduct(req,res, next)
 });
+productRouter.post("/addCategory", jwtAuth, (req, res, next)=>{
+    productController.addCateory(req,res,next);
+});
 productRouter.post("/rate", jwtAuth, (req,res, next)=>{
     productController.rateProduct(req,res, next)
 });

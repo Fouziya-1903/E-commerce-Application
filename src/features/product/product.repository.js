@@ -1,7 +1,12 @@
 import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import { getDB } from "../../config/mongodb.js";
 import { ApplicationError } from "../../error-handler/applicationError.js";
-import e from "express";
+import { ProductModel, productSchema } from "./product.schema.js";
+import { userSchema } from "../user/user.schema.js";
+import { reviewSchema, ReviewModel } from "./review.schema.js";
+import { CategoryModel } from "./category.schema.js";
+
 
 export default class ProductRepository{
 
@@ -10,25 +15,53 @@ export default class ProductRepository{
         this.collection = "products";
     }
 
-    async add(newProduct){
-        try{
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            await collection.insertOne(newProduct);
-            return newProduct;
 
-        }catch(err){
+    async add(productData) {
+        try {
+            let categoryNames = productData.category || [];
+
+            // If form-data sends a single text string (e.g. "mobilePhone"),
+            // wrap it into an array format automatically so the loop doesn't split individual letters.
+            if (typeof categoryNames === 'string') {
+                categoryNames = [categoryNames];
+            }
+
+            const categoryIds = [];
+
+            for (const name of categoryNames) {
+                let category = await CategoryModel.findOne({ name: name.trim() });
+
+                if (!category) {
+                    category = new CategoryModel({ name: name.trim() });
+                    await category.save();
+                }
+
+                categoryIds.push(category._id);
+            }
+
+            // Replace the text strings with the mapped ObjectIds
+            productData.category = categoryIds;
+
+            // Instantiate and save the product
+            const newProduct = new ProductModel(productData);
+            await newProduct.save();
+
+            // Establish the Many-to-Many back-link relationship
+            await CategoryModel.updateMany(
+                { _id: { $in: categoryIds } },
+                { $addToSet: { products: newProduct._id } }
+            );
+
+            return newProduct;
+        } catch (err) {
             console.log(err);
-            throw new ApplicationError("Something went wrong with add product in database");
+            throw new ApplicationError("Something went wrong with add product in database", 500);
         }
     }
 
     async getAllProducts(){
         try{
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            const products = await collection.find({}).toArray();
-            return products;
+            return await ProductModel.find({});
         }catch(err){
             console.log(err);
             throw new ApplicationError("Something went wrong with getAll products in database");
@@ -37,10 +70,7 @@ export default class ProductRepository{
 
     async getOneProduct(id){
         try{
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            const product =  await collection.findOne({_id: new ObjectId(id)});
-            return product;
+            return await ProductModel.findById(id);
         }catch(err){
             console.log(err);
             throw new ApplicationError("Something went wrong with getOne Product in database");
@@ -49,9 +79,6 @@ export default class ProductRepository{
 
     async filter(minPrice, maxPrice, category) {
     try {
-        const db = getDB();
-        const collection = db.collection(this.collection);
-
         let filterExpression = {};
 
         // 1. Handle the price field safely without wiping out keys
@@ -72,8 +99,7 @@ export default class ProductRepository{
         }
 
         // 3. Execute the compound query and convert the cursor stream to an array
-        const filteredProducts = await collection.find(filterExpression).toArray();
-        return filteredProducts;
+        return await ProductModel.find(filterExpression);
         
         } catch (err) {
             console.log(err);
@@ -82,67 +108,65 @@ export default class ProductRepository{
         }
     }
 
-    async rateProduct(userId, productId, ratings) {
+    async rateProduct(userId, productId, rating) {
         try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
-
-            // 1. Guard Clause: Ensure both IDs are valid 24-character hex layouts
-            if (!ObjectId.isValid(userId) || !ObjectId.isValid(productId)) {
-                throw new ApplicationError("Invalid format for User ID or Product ID supplied.", 400);
+            const productToUpdate = await ProductModel.findById(productId);
+            if(!productToUpdate){
+                throw new ApplicationError("Product not found");
             }
 
-            const pId = new ObjectId(productId);
-            const uId = new ObjectId(userId);
-            const numericRating = Number(ratings);
-
-            // 2. STEP 1: Try to update an existing score for this user
-            const updateResult = await collection.updateOne(
-                { 
-                    _id: pId, 
-                    "ratings.userId": uId 
-                },
-                { 
-                    // ✅ FIXED: Using the positional operator ($) to update the specific matched index
-                    $set: { "ratings.$.ratings": numericRating } 
-                }
-            );
-
-            // 3. STEP 2: If no existing rating matched this user, push a fresh one instead
-            // ✅ FIXED: Replaced 'if(numericRating)' with database match validation
-            if (updateResult.matchedCount === 0) {
-                await collection.updateOne(
-                    { _id: pId }, 
-                    {
-                        $push: { 
-                            ratings: { 
-                                userId: uId,         // ✅ Clean reused variable
-                                ratings: numericRating // ✅ Clean reused variable
-                            } 
-                        }
-                    }
-                );
+            const userReview = await ReviewModel.findOne({productId: new ObjectId(productId), user: new ObjectId(userId)})
+            if(userReview){
+                userReview.rating = rating;
+                await userReview.save();
+            }else{
+                const newReview = new ReviewModel({
+                    productId: new ObjectId(productId), 
+                    user: new ObjectId(userId),
+                    rating: rating
+                });
+                newReview.save();
             }
-            
         }catch(err) {
             console.log(err);
             if (err instanceof ApplicationError) throw err;
             throw new ApplicationError("Something went wrong with rateProduct in database", 500);
         }    
     }
+
+    async addCategory(categoryData) {
+        try {
+            // Explicitly trim the incoming name to avoid duplicates with empty spaces
+            if (categoryData.name) {
+                categoryData.name = categoryData.name.trim();
+            }
+
+            // Check if the category already exists to prevent an accidental duplicate crash
+            const existingCategory = await CategoryModel.findOne({ name: categoryData.name });
+            if (existingCategory) {
+                throw new ApplicationError("Category already exists", 400);
+            }
+
+            const categoryDoc = new CategoryModel(categoryData);
+            await categoryDoc.save();
+            return categoryDoc;
+        } catch (err) {
+            console.log("Error inside addCategory repository:", err);
+            if (err instanceof ApplicationError) throw err;
+            throw new ApplicationError("Something went wrong with adding a category in database", 500);
+        }
+    }
     
     async avgProductPricePerCategory(){
         try{
-            const db = getDB();
-            return await db.collection(this.collection).
-                aggregate([
+            return await ProductModel.aggregate([
                     {
                         $group: {
                             _id: "$category",
                             averagePrice: {$avg: "$price"} 
                         }
                     }
-                ]).toArray();
+                ]);
         }catch(err){
             console.log(err);
             if(err instanceof ApplicationError) throw err;

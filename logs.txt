@@ -468,3 +468,40 @@
 {"level":"info","message":"/api/users/signUp - {\"name\":\"seller4\",\"email\":\"seller4@email.com\",\"password\":\"password@Seller4\",\"type\":\"seller\"}","service":"request-logging"}
 {"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"password@Seller4\"}","service":"request-logging"}
 {"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"password@Seller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller4@email.com\",\"password\":\"password@Seller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller5@email.com\",\"password\":\"password@Seller4\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller5\",\"email\":\"seller5@email.com\",\"password\":\"password@Seller5\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller5@email.com\",\"password\":\"password@Seller5\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller5\",\"email\":\"seller5@email.com\",\"password\":\"password@Seller5\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller5@email.com\",\"password\":\"password@Seller5\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getAll products in database","method":"GET","service":"request-logging","stack":"Error: Something went wrong with getAll products in database\n    at ProductController.getAllProducts (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:16:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with getAll products in database","method":"GET","service":"request-logging","stack":"Error: Something went wrong with getAll products in database\n    at ProductController.getAllProducts (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:16:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with add product in product controller","method":"POST","service":"request-logging","stack":"Error: Something went wrong with add product in product controller\n    at ProductController.addProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:40:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/rate - {\"userId\":\"6a0c6577aca35375f102b4f5\",\"productId\":\"6a12d839955249331445f3c0\",\"ratings\":4}","service":"request-logging"}
+{"level":"info","message":"/api/products/rate - {\"userId\":\"6a0c6577aca35375f102b4f5\",\"productId\":\"6a12d839955249331445f3c0\",\"ratings\":4}","service":"request-logging"}
+{"level":"info","message":"/api/products/rate - {\"userId\":\"6a0c6577aca35375f102b4f5\",\"productId\":\"6a12d839955249331445f3c0\",\"ratings\":4.5}","service":"request-logging"}
+{"level":"info","message":"/api/users/signUp - {\"name\":\"seller5\",\"email\":\"seller5@email.com\",\"password\":\"password@Seller5\",\"type\":\"seller\"}","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller5@email.com\",\"password\":\"password@Seller5\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/addCategory - {\"name\":\"Electronics\",\"products\":[\"6a12d813955249331445f3bf\",\"6a12d839955249331445f3c0\"]}","service":"request-logging"}
+{"level":"info","message":"/api/products/addCategory - {\"name\":\"Electronics\",\"products\":[\"6a12d813955249331445f3bf\",\"6a12d839955249331445f3c0\"]}","service":"request-logging"}
+{"level":"info","message":"/api/products/addCategory - {\"name\":\"Electronics\",\"products\":[\"6a12d813955249331445f3bf\",\"6a12d839955249331445f3c0\"]}","service":"request-logging"}
+{"level":"info","message":"/api/products/addCategory - {\"name\":\"Electronics\",\"products\":[\"6a12d813955249331445f3bf\",\"6a12d839955249331445f3c0\"]}","service":"request-logging"}
+{"level":"info","message":"/api/products/addCategory - {\"name\":\"Electronics\",\"products\":[\"6a12d813955249331445f3bf\",\"6a12d839955249331445f3c0\"]}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"seller5@email.com\",\"password\":\"password@Seller5\"}","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with add product in product controller","method":"POST","service":"request-logging","stack":"Error: Something went wrong with add product in product controller\n    at ProductController.addProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:40:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"error","message":"Something went wrong with add product in product controller","method":"POST","service":"request-logging","stack":"Error: Something went wrong with add product in product controller\n    at ProductController.addProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:40:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products"}
+{"level":"info","message":"/api/products - {\"name\":\"nokia\",\"price\":7000,\"size\":\"standard\",\"category\":[\"mobilePhone\"]}","service":"request-logging"}
+{"level":"error","message":"Something went wrong with add product in product controller","method":"POST","service":"request-logging","stack":"Error: Something went wrong with add product in product controller\n    at ProductController.addProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:40:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products"}
+{"level":"info","message":"/api/products - {\"name\":\"nokia\",\"price\":7000,\"size\":\"standard\",\"category\":[\"mobilePhone\"]}","service":"request-logging"}
