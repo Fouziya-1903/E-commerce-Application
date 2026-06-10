@@ -1,13 +1,12 @@
 import dotenv from "dotenv";
 import swagger from 'swagger-ui-express';
-import apiDocs from './swagger.json' with { type: 'json' };
 import cors from "cors";
+import express from "express";
 import winston from "winston";
 
 import {connectToMongoDB} from "./src/config/mongodb.js";
 import { connectUsingMongoose } from "./src/config/mongoose.js";
 
-import express from "express";
 import {productRouter} from "./src/features/product/product.routes.js"
 import { userRouter } from "./src/features/user/user.routes.js";
 import orderRouter from "./src/features/order/order.routes.js";
@@ -20,10 +19,34 @@ import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import { cartRouter } from "./src/features/cart/cart.routes.js";
 import loggerMiddleware, { logger } from "./src/middlewares/logger.middleware.js";
 import { ApplicationError } from "./src/error-handler/applicationError.js";
+
+
+import apiDocs from './swagger.json' with { type: 'json' };
+import cartDocs from './src/features/cart/cart.swagger.json' with { type: 'json' };
+import productDocs from './src/features/product/product.swagger.json' with {type: 'json'};
+
 //Load the variables into process.env
 dotenv.config();
 
 const server = express();
+
+const completeSwaggerDocs = {
+    ...apiDocs,
+    paths: {
+        ...apiDocs.paths,
+        ...productDocs.paths,
+        ...cartDocs.paths  
+    },
+    components: {
+        ...apiDocs.components,
+        schemas: {
+            ...apiDocs.components?.schemas,
+            ...productDocs.schemas,
+            ...cartDocs.schemas 
+        }
+    }
+};
+
 
 let corsOptions = {
     origin:'http://localhost:5500',
@@ -34,18 +57,10 @@ let corsOptions = {
 
 server.use(cors(corsOptions));
 
-// server.use((req, res, next)=>{
-//     res.header("Access-Control-Allow,Origin", "http://127.0.0.1:5500/index.html")
-//     res.header("Access-Control-Allow-Headers", '*');
-//     res.header("Access-Control-Allow-Methods", '*');
-//     if(req.method == "OPTIONS"){
-//         return res.sendStatus(200);
-//     }
-//     next();
-// });
 
 server.use(express.json());
-server.use("/api-docs",swagger.serve, swagger.setup(apiDocs));
+
+server.use("/api-docs", swagger.serve, swagger.setup(completeSwaggerDocs));
 
 server.use(loggerMiddleware);
 

@@ -1,74 +1,28 @@
 {
-    "openapi" : "3.0.4",
-    "info":{
-        "version": "0.1.9",
-        "description": "API for E-Commerce Application",
-        "title": "E-Commerce API"
-    },
-    "servers":[
-        {
-            "url":"http://localhost:3000"
-        }
-    ],
-    "security":[
-        {
-            "JWT": []
-        }
-    ],
-    "components": {
-        "securitySchemes": {
-        "JWT": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
-        }
-        }
-    },
-    "paths":  {
-        "/api/products": {
-            "get":{
-                "tags": ["products"],
-                "summary":"Get products",
-                "description": "User will get all products",
-                "security":[{"JWT": []}],
-                "responses":{
-                    "200":{
-                        "description":"OK"
-                    },
-                    "401":{
-                        "description": "Unauthorized"
-                    }
-                }
-            }
-        },
-        "/api/users/signin": {
-            "post":{
-                "type": ["Users"],
-                "summary":"Login",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                "email": { "type": "string" },
-                                "password": { "type": "string" }
-                                }
-                            }
-                        }
-                    }
-                },
-
-                "responses":{
-                    "200":{
-                        "description":"OK"
-                    },
-                    "400":{
-                        "description": "Incorrect Credentials"
-                    }
-                }
-            }
-        }
+  "openapi": "3.0.4",
+  "info": {
+    "version": "0.1.9",
+    "description": "API for E-Commerce Application",
+    "title": "E-Commerce API"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
     }
+  ],
+  "security": [
+    {
+      "JWT": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "paths": {}
 }

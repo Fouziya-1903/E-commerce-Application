@@ -1,0 +1,60 @@
+{
+  "paths": {
+    "/api/cart": {
+      "post": {
+        "tags": ["Cart"],
+        "summary": "Add product item to cart",
+        "parameters": [
+          { "name": "productId", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "quantity", "in": "query", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "201": { "description": "The item is added to the cart" }
+        }
+      },
+      "get": {
+        "tags": ["Cart"],
+        "summary": "Get user's cart items",
+        "responses": {
+          "200": { "description": "Successfully retrieved cart items list." }
+        }
+      }
+    },
+    "/api/cart/update": {
+      "put": {
+        "tags": ["Cart"],
+        "summary": "Update cart item quantity",
+        "parameters": [
+          { "name": "productId", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "quantity", "in": "query", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "cart item is successfully updated" }
+        }
+      }
+    },
+    "/api/cart/delete": {
+      "post": {
+        "tags": ["Cart"],
+        "summary": "Remove item from cart",
+        "parameters": [
+          { "name": "cartItemId", "in": "query", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "The cart item is deleted successfully" }
+        }
+      }
+    }
+  },
+  "schemas": {
+    "CartItem": {
+      "type": "object",
+      "properties": {
+        "_id": { "type": "string" },
+        "productId": { "type": "string" },
+        "userId": { "type": "string" },
+        "quantity": { "type": "integer" }
+      }
+    }
+  }
+}

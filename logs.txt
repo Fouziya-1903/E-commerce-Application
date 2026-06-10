@@ -540,3 +540,6 @@
 {"level":"info","message":"/api/like?id=6a1eacb063a11930d80d4de0 - undefined","service":"request-logging"}
 {"level":"info","message":"/api/like?id=6a1eacb063a11930d80d4de0 - undefined","service":"request-logging"}
 {"level":"info","message":"/api/like?id=6a1eacb063a11930d80d4de0 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/like?id=6a1eacb063a11930d80d4de0 - undefined","service":"request-logging"}
+{"level":"info","message":"/api/docs - undefined","service":"request-logging"}
+{"level":"info","message":"/favicon.ico - undefined","service":"request-logging"}

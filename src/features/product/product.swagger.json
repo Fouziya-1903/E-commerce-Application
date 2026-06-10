@@ -1,0 +1,200 @@
+{
+  "paths": {
+    "/api/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all products",
+        "description": "Retrieves an array of all active products in the system.",
+        "responses": {
+          "200": {
+            "description": "A list of products retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Database query failure while retrieving records." }
+        }
+      },
+      "post": {
+        "tags": ["Products"],
+        "summary": "Add a new product with image",
+        "description": "Creates a new product record, dynamically processes structural categories, and hooks up the image path string.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "desc": { "type": "string" },
+                  "price": { "type": "string", "description": "Price numeric representation string" },
+                  "category": { "type": "string", "description": "Single category or string list array reference" },
+                  "size": { "type": "string", "description": "Comma-separated string elements (e.g. 'M,L,XL')" },
+                  "imageUrl": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The product raw image file to upload via multipart multer handler"
+                  }
+                },
+                "required": ["name", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "message": "Product added and categories updated successfully",
+                  "data": {
+                    "_id": "64bcf123e4b0cc123456789a",
+                    "name": "Sample Product",
+                    "price": 299.99,
+                    "category": ["64bcf555e4b0cc123456789c"]
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Controller execution parsing exception thrown." }
+        }
+      }
+    },
+    "/api/products/filter": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Filter products using bounds",
+        "description": "Queries product inventories selectively matching numeric price ranges and matching direct properties.",
+        "parameters": [
+          { "name": "minPrice", "in": "query", "schema": { "type": "string" } },
+          { "name": "maxPrice", "in": "query", "schema": { "type": "string" } },
+          { "name": "category", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Matching criteria products output arrays matching conditions." },
+          "500": { "description": "Database conditional filter process failure." }
+        }
+      }
+    },
+    "/api/products/averageProductPrice": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Calculate average price per category group",
+        "description": "Utilizes the MongoDB aggregation framework pipeline to crunch cross-collection financial arithmetic averages.",
+        "responses": {
+          "200": {
+            "description": "Aggregated price calculations arrays grouped cleanly.",
+            "content": {
+              "application/json": {
+                "example": [
+                  { "_id": "64bcf555e4b0cc123456789c", "averagePrice": 42499 }
+                ]
+              }
+            }
+          },
+          "500": { "description": "Aggregation engine failure." }
+        }
+      }
+    },
+    "/api/products/addCategory": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Register a new category classification manually",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "Smart Wearables" }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Category document tracking instantiated successfully." },
+          "400": { "description": "Category item classification already exists on the collection schema validation guard." }
+        }
+      }
+    },
+    "/api/products/rate": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Submit rating values against a target product identity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": { "type": "string" },
+                  "productId": { "type": "string" },
+                  "ratings": { "type": "integer", "minimum": 1, "maximum": 5 }
+                },
+                "required": ["userId", "productId", "ratings"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successfully rated the product" },
+          "404": { "description": "Target reference data structural pointer not found." }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get a specific single product tracking ID entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The explicit product unique Hex String signature pointer identity"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Product document record extracted successfully matching identity." },
+          "404": { "description": "Product not found" }
+        }
+      }
+    }
+  },
+  "schemas": {
+    "Product": {
+      "type": "object",
+      "properties": {
+        "_id": { "type": "string" },
+        "name": { "type": "string" },
+        "desc": { "type": "string" },
+        "price": { "type": "number" },
+        "inStock": { "type": "integer" },
+        "category": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reviews": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
