@@ -24,6 +24,9 @@ import { ApplicationError } from "./src/error-handler/applicationError.js";
 import apiDocs from './swagger.json' with { type: 'json' };
 import cartDocs from './src/features/cart/cart.swagger.json' with { type: 'json' };
 import productDocs from './src/features/product/product.swagger.json' with {type: 'json'};
+import userDocs from './src/features/user/user.swagger.json' with {type: 'json'};
+import orderDocs from './src/features/order/order.swagger.json' with { type: 'json' };
+import likeDocs from './src/features/like/like.swagger.json' with { type: 'json' };
 
 //Load the variables into process.env
 dotenv.config();
@@ -34,15 +37,21 @@ const completeSwaggerDocs = {
     ...apiDocs,
     paths: {
         ...apiDocs.paths,
+        ...userDocs.paths,  
         ...productDocs.paths,
-        ...cartDocs.paths  
+        ...cartDocs.paths,
+        ...orderDocs.paths,
+        ...likeDocs.paths
     },
     components: {
         ...apiDocs.components,
         schemas: {
             ...apiDocs.components?.schemas,
+            ...userDocs.schemas,
             ...productDocs.schemas,
-            ...cartDocs.schemas 
+            ...cartDocs.schemas,
+            ...orderDocs.schemas,
+            ...likeDocs.schemas
         }
     }
 };

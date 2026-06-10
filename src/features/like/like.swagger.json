@@ -1,0 +1,140 @@
+{
+  "paths": {
+    "/api/like": {
+      "post": {
+        "tags": ["Likes"],
+        "summary": "Like a product or a category",
+        "description": "Allows an authenticated user to add a 'Like' record. It uses a polymorphic database design via Mongoose `refPath` to handle links to either a 'Product' or a 'Category' document dynamically.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The unique MongoDB ObjectId of the target Product or Category being liked.",
+                    "example": "64bcf123e4b0cc123456789a"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["Product", "Category"],
+                    "description": "The target model classification type mapping.",
+                    "example": "Product"
+                  }
+                },
+                "required": ["id", "type"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully registered the like entry."
+          },
+          "400": {
+            "description": "Invalid type classification or internal application parsing failure.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Invalid type"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Access token is missing, expired, or invalid."
+          },
+          "500": {
+            "description": "Database transactional tracking failure."
+          }
+        }
+      },
+      "get": {
+        "tags": ["Likes"],
+        "summary": "Retrieve likes for a target document identity",
+        "description": "Fetches all matching like items, fully populating user credentials data alongside the deep-linked polymorphically references model properties.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique target Hex String ObjectId of the entity whose likes are being queried.",
+            "example": "64bcf123e4b0cc123456789a"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["Product", "Category"]
+            },
+            "description": "Optional model type specifier to streamline multi-collection query executions.",
+            "example": "Product"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved array list of matching like records containing populated details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LikeItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Controller boundary extraction parsing failure."
+          },
+          "500": {
+            "description": "Database lookup execution trace drop."
+          }
+        }
+      }
+    }
+  },
+  "schemas": {
+    "LikeItem": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "66bcf987e4b0cc987654321e"
+        },
+        "user": {
+          "type": "object",
+          "description": "Fully populated User document details object.",
+          "properties": {
+            "_id": { "type": "string", "example": "64bca111e4b0cc111222333c" },
+            "name": { "type": "string", "example": "Jane Doe" },
+            "email": { "type": "string", "example": "janedoe@example.com" }
+          }
+        },
+        "likeable": {
+          "type": "object",
+          "description": "Polymorphically populated reference document object matching the evaluated string type context layer."
+        },
+        "modelType": {
+          "type": "string",
+          "enum": ["Product", "Category"],
+          "example": "Product"
+        }
+      }
+    }
+  }
+}
