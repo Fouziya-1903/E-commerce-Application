@@ -22,6 +22,8 @@ import { ApplicationError } from "./src/error-handler/applicationError.js";
 
 
 import apiDocs from './swagger.json' with { type: 'json' };
+import middlewareDocs from './src/middlewares/middleware.swagger.json' with { type: 'json' };
+
 import cartDocs from './src/features/cart/cart.swagger.json' with { type: 'json' };
 import productDocs from './src/features/product/product.swagger.json' with {type: 'json'};
 import userDocs from './src/features/user/user.swagger.json' with {type: 'json'};
@@ -37,7 +39,7 @@ const completeSwaggerDocs = {
     ...apiDocs,
     paths: {
         ...apiDocs.paths,
-        ...userDocs.paths,  
+        ...userDocs.paths,
         ...productDocs.paths,
         ...cartDocs.paths,
         ...orderDocs.paths,
@@ -45,20 +47,29 @@ const completeSwaggerDocs = {
     },
     components: {
         ...apiDocs.components,
+        ...middlewareDocs.components, 
+        securitySchemes: {
+            ...apiDocs.components?.securitySchemes,
+            ...middlewareDocs.components?.securitySchemes
+        },
         schemas: {
             ...apiDocs.components?.schemas,
+            ...middlewareDocs.components?.schemas,
             ...userDocs.schemas,
             ...productDocs.schemas,
             ...cartDocs.schemas,
             ...orderDocs.schemas,
             ...likeDocs.schemas
+        },
+        responses: {
+            ...apiDocs.components?.responses,
+            ...middlewareDocs.components?.responses 
         }
     }
 };
 
-
 let corsOptions = {
-    origin:'http://localhost:5500',
+    origin:'*',
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true

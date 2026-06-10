@@ -77,33 +77,41 @@ export default class ProductRepository{
         }
     }
 
-    async filter(minPrice, maxPrice, category) {
-    try {
-        let filterExpression = {};
+    async filter(minPrice, maxPrice, categoryName) {
+        try {
+            let filterExpression = {};
 
-        // 1. Handle the price field safely without wiping out keys
-        if (minPrice || maxPrice) {
-            filterExpression.price = {}; // Initialize an empty query sub-object
+            // 1. Handle the price field safely
+            if (minPrice || maxPrice) {
+                filterExpression.price = {};
+                if (minPrice) {
+                    filterExpression.price.$gte = parseFloat(minPrice);
+                }
+                if (maxPrice) {
+                    filterExpression.price.$lte = parseFloat(maxPrice);
+                }
+            }
+
+            // 2. Fix the Category Lookup bug!
+            if (categoryName) {
+                // Find the category document by its text name first
+                const foundCategory = await CategoryModel.findOne({ name: categoryName.trim() });
+                
+                if (foundCategory) {
+                    // Use the valid dynamic ObjectId found in the cloud database to query products
+                    filterExpression.category = foundCategory._id;
+                } else {
+                    // If the category name doesn't exist at all, force the query to return an empty array 
+                    // instead of crashing or returning all items
+                    return [];
+                }
+            }
+
+            // 3. Execute the compound query
+            return await ProductModel.find(filterExpression);
             
-            if (minPrice) {
-                filterExpression.price.$gte = parseFloat(minPrice);
-            }
-            if (maxPrice) {
-                filterExpression.price.$lte = parseFloat(maxPrice);
-            }
-        }
-
-        // 2. Handle the optional category string match
-        if (category) {
-            filterExpression.category = category;
-        }
-
-        // 3. Execute the compound query and convert the cursor stream to an array
-        return await ProductModel.find(filterExpression);
-        
         } catch (err) {
             console.log(err);
-            // Corrected typo to log filter failures accurately inside your global error boundary
             throw new ApplicationError("Something went wrong with filtering products in database", 500);
         }
     }

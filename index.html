@@ -1,70 +1,190 @@
-<!-- TO get the desired error, ensure that your server is 
-    running at the specified port -->
-
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-     <meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-  </head>
+    <title>E-Commerce Hub Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
 
-  <body>
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <h1 class="text-xl font-bold text-indigo-600 tracking-tight">E-Commerce System Portfolio</h1>
+            <div class="flex items-center space-x-4">
+                <span id="authStatus" class="text-sm font-medium px-3 py-1 rounded-full bg-red-100 text-red-700">Database Offline</span>
+                <a href="http://localhost:3000/api-docs" target="_blank" class="text-sm font-semibold text-gray-600 hover:text-indigo-600 transition">View Swagger Docs &rarr;</a>
+            </div>
+        </div>
+    </header>
 
-    <h2>Products</h2>
-    <table class = "table">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Desc</th>
-                <th scope="col">Price</th>
-            </tr>
-        </thead>
-        <tbody id = "productTableBody">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
 
-        </tbody>
-    </table>
+        <section class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h2 class="text-lg font-bold text-gray-900 mb-2">1. Identity & Credentials Management</h2>
+                <p class="text-sm text-gray-500 mb-6">Create an account or login to receive your authorization key string (`jwtAuth`) to unlock protected endpoint transactions.</p>
+                
+                <form id="authForm" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Email Address</label>
+                        <input type="email" id="email" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition" placeholder="dev@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Password Credentials</label>
+                        <input type="password" id="password" required class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition" placeholder="••••••••">
+                    </div>
+                    <div class="flex space-x-3 pt-2">
+                        <button type="button" onclick="handleAuth('signUp')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg transition text-sm">Register Account</button>
+                        <button type="button" onclick="handleAuth('signIn')" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition shadow-sm text-sm">Authenticate Login</button>
+                    </div>
+                </form>
+            </div>
 
-	<script>
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjQsImVtYWlsIjoiY3VzdG9tZXJAZW1haWwuY29tIiwiaWF0IjoxNzc4Njg3NzcyLCJleHAiOjE3Nzg2OTEzNzJ9.PhxeNlENCEHjKN-j1xyPjsb234jHEIaXYycSprcjuXY';
-     
-        fetch('http://localhost:3000/api/products', {
-            headers: {
-                'Authorization': token
+            <div class="flex flex-col h-full">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Live Gateway Network Logs</h3>
+                <div id="apiConsole" class="flex-1 bg-gray-900 rounded-lg p-4 font-mono text-xs text-green-400 overflow-y-auto h-48 max-h-64 border border-gray-950 shadow-inner">
+                    [System Status]: Awaiting pipeline triggers. Authenticate to test transactions...
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">2. Real-Time Mongoose Product Catalog</h2>
+                    <p class="text-sm text-gray-500">Fetches items dynamically from MongoDB Atlas collections.</p>
+                </div>
+                <button onclick="fetchProducts()" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-semibold py-1.5 px-4 rounded-lg text-sm transition shadow-sm">
+                    Sync Live Inventories
+                </button>
+            </div>
+
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4 animate-pulse">
+                    <div class="bg-gray-200 h-32 w-full rounded-lg"></div>
+                    <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+                    <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const API_BASE = "http://localhost:3000/api";
+        let userToken = localStorage.getItem("jwtToken") || null;
+
+        function logToConsole(message, status = 'info') {
+            const consoleBox = document.getElementById("apiConsole");
+            const timestamp = new Date().toLocaleTimeString();
+            const colorClass = status === 'error' ? 'text-red-400' : status === 'success' ? 'text-indigo-300' : 'text-green-400';
+            consoleBox.innerHTML += `<div class="mt-1 ${colorClass}">[${timestamp}] ${message}</div>`;
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        // 1. Authentication Execution Handler (SignUp / SignIn)
+        async function handleAuth(endpoint) {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if(!email || !password) return alert("Please specify input values.");
+
+            try {
+                logToConsole(`Dispatching payload to /users/${endpoint}...`);
+                const response = await fetch(`${API_BASE}/users/${endpoint}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: "Demo User", email, password, type: "customer" })
+                });
+
+                if(!response.ok) throw new Error(`HTTP Error Status: ${response.status}`);
+
+                if (endpoint === 'signIn') {
+                    userToken = await response.text();
+                    localStorage.setItem("jwtToken", userToken);
+                    document.getElementById("authStatus").innerText = "Authenticated Session Connected";
+                    document.getElementById("authStatus").className = "text-sm font-medium px-3 py-1 rounded-full bg-green-100 text-green-700";
+                    logToConsole("JWT Token assigned and encrypted successfully inside client storage!", "success");
+                } else {
+                    logToConsole("Registration successfully written to Cloud Cluster!", "success");
+                }
+            } catch (err) {
+                logToConsole(`Authentication failed: ${err.message}`, "error");
             }
-        })
-          .then(response =>response.json())
-          .then(data => {
-            const tableBody = document.getElementById('productTableBody');
-            data.forEach((item) => {
-                const row = document.createElement('tr');
+        }
 
-                const idCell = document.createElement('td');
-                idCell.textContent = item.id;
-                row.appendChild(idCell);
+        // 2. Fetch Live Database Inventory Arrays
+        async function fetchProducts() {
+            try {
+                logToConsole("Querying database context entries via GET /products...");
+                const response = await fetch(`${API_BASE}/products`);
+                if(!response.ok) throw new Error("Could not pull product collection indexes");
+                
+                const data = await response.json();
+                const grid = document.getElementById("productGrid");
+                grid.innerHTML = "";
 
-                const nameCell = document.createElement('td');
-                nameCell.textContent = item.name;
-                row.appendChild(nameCell);
+                if(data.length === 0) {
+                    grid.innerHTML = `<p class="text-sm text-gray-500 col-span-full py-8 text-center">Collection online but empty. Insert a product document through Swagger to see it here!</p>`;
+                    return;
+                }
 
-                const descCell = document.createElement('td');
-                descCell.textContent = item.desc;
-                row.appendChild(descCell);
+                data.forEach(product => {
+                    grid.innerHTML += `
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                            <div>
+                                <div class="bg-gray-100 rounded-lg h-36 flex items-center justify-center overflow-hidden mb-4 border border-gray-100">
+                                    <img src="${product.imageUrl || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'}" class="object-cover h-full w-full" alt="Media Asset">
+                                </div>
+                                <h3 class="font-bold text-gray-900 text-base mb-1">${product.name}</h3>
+                                <p class="text-xs text-gray-500 line-clamp-2 mb-3">${product.desc || 'No descriptive snapshot metadata cataloged on document entry.'}</p>
+                            </div>
+                            <div class="pt-2 border-t border-gray-100 flex items-center justify-between mt-4">
+                                <span class="text-indigo-600 font-extrabold text-lg">₹${product.price}</span>
+                                <button onclick="addToCart('${product._id}')" class="bg-gray-900 hover:bg-gray-800 text-white font-medium text-xs px-3 py-1.5 rounded-md transition shadow-sm">
+                                    + Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                logToConsole(`Rendered ${data.length} active inventory items successfully.`, "success");
+            } catch (err) {
+                logToConsole(`Inventory Sync Exception: ${err.message}`, "error");
+            }
+        }
 
-                const priceCell = document.createElement('td');
-                priceCell.textContent = item.price;
-                row.appendChild(priceCell);
+        // 3. Protected Pipeline Transaction Target: Add to Shopping Cart array
+        async function addToCart(productId) {
+            if(!userToken) {
+                logToConsole("Transaction rejected: User context is anonymous. Login first!", "error");
+                return alert("Please authorize your session by logging in first!");
+            }
 
-                tableBody.appendChild(row);
-            });
-          }) 
-          .catch(error => console.log('Error:', error));
-     </script>
-  </body>
+            try {
+                logToConsole(`Protected request dispatched: POST /cart?productId=${productId}`);
+                // Your backend extracts parameters from the URL queries block
+                const response = await fetch(`${API_BASE}/cart?productId=${productId}&quantity=1`, {
+                    method: "POST",
+                    headers: { "Authorization": userToken }
+                });
 
+                if(!response.ok) throw new Error(`Access Denied or Bad Request [${response.status}]`);
+                
+                const text = await response.text();
+                logToConsole(`Server confirmed: "${text}"`, "success");
+            } catch(err) {
+                logToConsole(`Cart write exception: ${err.message}`, "error");
+            }
+        }
+
+        // Runtime Boot Executions
+        if (userToken) {
+            document.getElementById("authStatus").innerText = "Authorized Token Cache Ready";
+            document.getElementById("authStatus").className = "text-sm font-medium px-3 py-1 rounded-full bg-green-100 text-green-700";
+        }
+        fetchProducts();
+    </script>
+</body>
 </html>

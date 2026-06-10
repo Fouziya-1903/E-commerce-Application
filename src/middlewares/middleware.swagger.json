@@ -1,0 +1,17 @@
+{
+  "components": {
+    "responses": {
+      "401Unauthorized": {
+        "description": "Unauthorized: Access token is missing, expired, or invalid.",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Unauthorized"
+            }
+          }
+        }
+      }
+    }
+  }
+}
