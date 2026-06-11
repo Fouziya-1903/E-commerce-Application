@@ -558,3 +558,9 @@
 {"level":"info","message":"/api/products - undefined","service":"request-logging"}
 {"level":"info","message":"/api/products/filter?minPrice=242121&maxPrice=800000000000000&category=Automobiles - undefined","service":"request-logging"}
 {"level":"error","message":"Something went wrong with filterProduct in controller","method":"GET","service":"request-logging","stack":"Error: Something went wrong with filterProduct in controller\n    at ProductController.filterProduct (file:///C:/Users/Asus/Desktop/E-commerce-Application/src/features/product/product.controller.js:85:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","url":"/api/products/filter?minPrice=242121&maxPrice=800000000000000&category=Automobiles"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?category=Automobiles - undefined","service":"request-logging"}
+{"level":"info","message":"/api/users/signIn - {\"email\":\"fouzi@example.com\",\"password\":\"Fouzi@123\"}","service":"request-logging"}
+{"level":"info","message":"/api/products/filter?category=Automobiles - undefined","service":"request-logging"}
+{"level":"info","message":"/api/products - undefined","service":"request-logging"}
