@@ -13,6 +13,10 @@ export default class userRepository{
             return newUser;
         }catch(err){
             console.log(err);
+            if (err.code === 11000) {
+                // You can customize this error or pass it to your custom ApplicationError class
+                throw new ApplicationError("An account with this email already exists.", 400);
+            }
             throw new ApplicationError("something went wrong in the mongoose user.newRepository.js", 500);
         }
     }
@@ -24,10 +28,10 @@ export default class userRepository{
                 return null;
             }
 
-            console.log("------------------ AUTH DEBUG ------------------");
-            console.log("1. RAW PASSWORD FROM POSTMANPAYLOAD:", password);
-            console.log("2. PASSWORD ATTRIBUTE FROM DB OBJECT:", user.password);
-            console.log("------------------------------------------------");
+            // console.log("------------------ AUTH DEBUG ------------------");
+            // console.log("1. RAW PASSWORD FROM POSTMANPAYLOAD:", password);
+            // console.log("2. PASSWORD ATTRIBUTE FROM DB OBJECT:", user.password);
+            // console.log("------------------------------------------------");
 
             // Execute the schema instance method we built to verify the bcrypt hash matrix safely
             const isPasswordMatched = await user.comparePassword(password, user.password);

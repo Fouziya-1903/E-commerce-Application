@@ -1,113 +1,105 @@
-import { ObjectId } from "mongodb";
-import { getDB } from "../../config/mongodb.js";
+import mongoose from "mongoose";
+import { orderSchema } from "./order.schema.js";
 import { ApplicationError } from "../../error-handler/applicationError.js";
-import { getClient } from "../../config/mongodb.js";
+
+const orderModel = mongoose.model('Order', orderSchema, 'orders');
 
 export default class OrderRepository {
-    constructor() {
-        this.collection = "orders";
-    }
 
     async placeOrder(userId) {
-        const client = getClient();
-        let session;
+        // Start a session straight from the main Mongoose instance connection pool
+        const session = await mongoose.startSession();
+        let finalizedOrderReceipt = null;
+
         try {
-            session = client.startSession();
-            session.startTransaction();
+    
+            await session.withTransaction(async () => {
+                
+                // 1. Fetch all items currently inside the user's cart using Mongoose
+                
+                const cartItems = await mongoose.model('Cart').find({ userId: userId }).session(session);
 
-            const db = getDB();
-            const uId = new ObjectId(userId);
-
-            // 1. Fetch all items currently inside the user's cart
-            const cartItems = await db.collection("cartItems").find({ userId: uId }, {session}).toArray();
-
-            if (cartItems.length === 0) {
-                throw new ApplicationError("Cannot place an order with an empty cart", 400);
-            }
-
-            // 2. ATOMIC STOCK VALIDATION & DECREMENTATION LOOP
-            // We iterate and decrement first. If any item fails, we flag it immediately.
-            for (const item of cartItems) {
-                const stockUpdateResult = await db.collection("products").updateOne(
-                    {
-                        _id: new ObjectId(item.productId),
-                        stock: { $gte: item.quantity } // Database-level condition guard rail
-                    },
-                    {
-                        $inc: { stock: -item.quantity } // Atomic calculation modification
-                    },
-                    { session }
-                );
-
-                // If matchedCount(This is sent by the mongoDB. It is a recept object after the update iis performed, which specifies the number of the documents in the database that matched the filter, regardless of if they were actually modified) is 0, it means the product doesn't exist OR stock < item.quantity
-                if (stockUpdateResult.matchedCount === 0) {
-                    throw new ApplicationError(
-                        `Transaction Aborted: Insufficient stock for product id ${item.productId}`, 
-                        400
-                    );
+                if (cartItems.length === 0) {
+                    throw new ApplicationError("Cannot place an order with an empty cart", 400);
                 }
-            }
 
-            // 3. Call internal aggregation method to get the final bill amount
-            const totalAmount = await this.getTotalAmount(userId, session);
+                // 2. ATOMIC STOCK VALIDATION & DECREMENTATION LOOP
+                for (const item of cartItems) {
+                    const itemQty = Number(item.quantity);
+                    const stockUpdateResult = await mongoose.model('Product').updateOne(
+                        {
+                            _id: item.productId,
+                            $or: [
+                                { inStock: { $gte: itemQty } },
+                                { inStock: { $exists: false } } // Safety guard if an old document lacks the property
+                            ]
+                        },
+                        {
+                            $inc: { inStock: -itemQty } 
+                        },
+                        { session }
+                    );
 
-            // 4. Create final immutable historical order receipt document
-            const newOrder = {
-                userId: uId,
-                totalAmount: totalAmount,
-                items: cartItems.map(item => ({
-                    productId: item.productId,
-                    quantity: item.quantity
-                })),
-                orderDate: new Date()
-            };
+                    // If matchedCount is 0, the item doesn't exist or live stock is too low
+                    if (stockUpdateResult.matchedCount === 0) {
+                        throw new ApplicationError(
+                            `Transaction Aborted: Insufficient stock for product id ${item.productId}`, 
+                            400
+                        );
+                    }
+                }
 
-            // Write order document record to the database
-            await db.collection(this.collection).insertOne(newOrder, {session});
+                const totalAmount = await this.getTotalAmount(userId, session);
 
-            // 5. Clear the shopping cart of the user after a successful purchase
-            await db.collection("cartItems").deleteMany({ userId: uId }, {session});
+                const newOrder = new orderModel({
+                    userId: userId,
+                    totalAmount: totalAmount,
+                    items: cartItems.map(item => ({
+                        productId: item.productId,
+                        quantity: item.quantity
+                    })),
+                    orderDate: new Date()
+                });
 
-            await session.commitTransaction();
-            return newOrder;
+                finalizedOrderReceipt = await newOrder.save({ session });
+                await mongoose.model('Cart').deleteMany({ userId: userId }).session(session);
+            });
+
+            return finalizedOrderReceipt;
 
         } catch (err) {
-            if (session) {
-                await session.abortTransaction();
-            }
             console.log("Transaction successfully rolled back due to error:", err.message);
+            
             if (err instanceof ApplicationError) throw err;
-            throw new ApplicationError("Database transaction crash during order placement", 500);
+            
+            throw new ApplicationError(err.message || "Database transaction crash during order placement", err.statusCode || 500);
         } finally {
-            if (session) {
-                await session.endSession();
-            }
+            // Terminate tracking sessions to clear memory
+            await session.endSession();
         }
     }
 
     async getTotalAmount(userId, session) {
         try {
-            const db = getDB();
-            const uId = new ObjectId(userId);
+            
+            const uId = new mongoose.Types.ObjectId(userId);
 
-            const result = await db.collection("cartItems").aggregate([
-                // Filter the items only belonging to the current user
+            const result = await mongoose.model('Cart').aggregate([
+                
                 { $match: { userId: uId } },
                 
-                // JOIN the target product info to read live prices
+                
                 {
                     $lookup: {
-                        from: "products",
+                        from: "products", 
                         localField: "productId",
                         foreignField: "_id",
                         as: "productDetails"
                     }
                 },
 
-                // Flattening the joined productDetails array
                 { $unwind: "$productDetails" },
 
-                // Project/calculate the total price for each cart item row
                 {
                     $project: {
                         userId: 1,
@@ -116,19 +108,18 @@ export default class OrderRepository {
                     }
                 },
 
-                // Group all items together and compute the grand sum
                 {
                     $group: {
-                        _id: "$userId", // Corrected key mapping syntax grouping constraint
+                        _id: "$userId",
                         grandTotal: { $sum: "$itemTotal" }
                     }
                 }
-            ], { session }).toArray();
+            ], { session });
 
             return result.length > 0 ? result[0].grandTotal : 0;
         } catch (err) {
             console.log(err);
-            throw new ApplicationError("Failed to calculate total checkout aggregates", 500);
+            throw new ApplicationError(err.message || "Failed to calculate total checkout aggregates", 500);
         }
     }
 }
